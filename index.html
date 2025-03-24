@@ -3,13 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>模型查看</title>
+    <title>GLB Model Viewer</title>
     <style>
         body { margin: 0; background-color: white; }
         canvas { display: block; }
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div id="loader"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -39,12 +56,14 @@
 
         // 加载GLB模型
         const loader = new THREE.GLTFLoader();
-        loader.load('https://zjfsit.oss-cn-guangzhou.aliyuncs.com/model.glb', function (gltf) {
+        loader.load('model.glb', function (gltf) {
             const model = gltf.scene;
             model.rotation.y = -Math.PI / 4; // 右旋转45度
             scene.add(model);
+            document.getElementById('loader').style.display = 'none'; // 隐藏加载动画
         }, undefined, function (error) {
             console.error(error);
+            document.getElementById('loader').style.display = 'none'; // 隐藏加载动画
         });
 
         // 添加轨道控制器
